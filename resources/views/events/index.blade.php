@@ -160,7 +160,7 @@
                 $('#from').datepicker({
                     uiLibrary: 'bootstrap4'
                 });
-                
+
                 $('#to').datepicker({
                     uiLibrary: 'bootstrap4'
                 });
@@ -177,7 +177,11 @@
                             // disable inputs and remove error if exist
                             saveEventButton.attr('disabled', true).text('Saving');
                             $.each(saveEventForm.find(':input'), function () {
-                                $(this).attr('disabled', true).removeClass('is-invalid').closest('.input-div').find('.invalid-feedback').html('');
+                                if ($(this).attr('data-type') == 'datepicker') {
+                                    $(this).removeClass('is-invalid').closest('.gj-datepicker').removeClass('is-invalid').closest('.input-div').find('.invalid-feedback').html('');
+                                } else {
+                                    $(this).attr('disabled', true).removeClass('is-invalid').closest('.input-div').find('.invalid-feedback').html('');
+                                }
                             });
                         },
                         success: function (data) {
@@ -198,7 +202,11 @@
                                             errorMessages = errorMessages + '<br>' + message;
                                         }
                                     })).done(function () {
-                                        $(':input[name="' + field + '"]').addClass('is-invalid').closest('.input-div').find('.invalid-feedback').html(errorMessages);
+                                        if ($(':input[name="' + field + '"]').attr('data-type') == 'datepicker') {
+                                            $(':input[name="' + field + '"]').addClass('is-invalid').closest('.gj-datepicker').addClass('is-invalid').closest('.input-div').find('.invalid-feedback').html(errorMessages);
+                                        } else {
+                                            $(':input[name="' + field + '"]').addClass('is-invalid').closest('.input-div').find('.invalid-feedback').html(errorMessages);
+                                        }
                                     });
                                 });
                             } else {
